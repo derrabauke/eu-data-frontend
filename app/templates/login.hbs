@@ -1,0 +1,79 @@
+{{page-title "Login"}}
+<section class="h-full gradient-form bg-gray-200 md:h-screen">
+  <div class="container py-12 px-6 h-full">
+    <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+      <div class="xl:w-10/12">
+        <div class="block bg-white shadow-lg rounded-lg">
+          <div class="lg:flex lg:flex-wrap g-0">
+            <div class="lg:w-6/12 px-4 md:px-0">
+              <div class="md:p-12 md:mx-6">
+                <div class="text-center">
+                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="graduation-cap" class="mx-auto w-8 h-8" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                    <path fill="currentColor" d="M622.34 153.2L343.4 67.5c-15.2-4.67-31.6-4.67-46.79 0L17.66 153.2c-23.54 7.23-23.54 38.36 0 45.59l48.63 14.94c-10.67 13.19-17.23 29.28-17.88 46.9C38.78 266.15 32 276.11 32 288c0 10.78 5.68 19.85 13.86 25.65L20.33 428.53C18.11 438.52 25.71 448 35.94 448h56.11c10.24 0 17.84-9.48 15.62-19.47L82.14 313.65C90.32 307.85 96 298.78 96 288c0-11.57-6.47-21.25-15.66-26.87.76-15.02 8.44-28.3 20.69-36.72L296.6 284.5c9.06 2.78 26.44 6.25 46.79 0l278.95-85.7c23.55-7.24 23.55-38.36 0-45.6zM352.79 315.09c-28.53 8.76-52.84 3.92-65.59 0l-145.02-44.55L128 384c0 35.35 85.96 64 192 64s192-28.65 192-64l-14.18-113.47-145.03 44.56z"></path>
+                  </svg>
+                  <h4 class="text-xl font-semibold mt-1 mb-12 pb-1">Data-Analysis Frontend</h4>
+                </div>
+                <form {{on "submit" this.login}}>
+                  <p class="mb-4">Please login to Neo4j Aura DB</p>
+                  <div class="mb-4">
+                    <input
+                      type="text"
+                      name="username"
+                      class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      id="username"
+                      placeholder="Username"
+                    />
+                  </div>
+                  <div class="mb-4">
+                    <input
+                      type="password"
+                      name="password"
+                      class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      id="password"
+                      placeholder="Password"
+                    />
+                  </div>
+                  <div class="text-center pt-1 mb-12 pb-1">
+                    <button
+                      class="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
+                      type="submit"
+                      data-mdb-ripple="true"
+                      data-mdb-ripple-color="light"
+                      style="
+                        background: linear-gradient(
+                          to right,
+                          #ee7724,
+                          #d8363a,
+                          #dd3675,
+                          #b44593
+                        );
+                      "
+                    >
+                      Log in
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div
+              class="lg:w-6/12 flex items-center lg:rounded-r-lg rounded-b-lg lg:rounded-bl-none"
+              style="
+                background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+              "
+            >
+              <div class="text-white px-4 py-6 md:p-12 md:mx-6">
+                <h4 class="text-xl font-semibold mb-6">What is this app about?</h4>
+                <p class="text-sm">
+                  This is the frontend application for my data-analysis project. The aim is to indentify cooperations in the project funding network.
+                </p>
+                <p class="text-sm">
+                  First of all you need a Neo4j AuraDB filled with the eu-funding data export. Second you need the right credentials to access this database. The last step is up to you! I hope this app can help gathering some intresting insights.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
