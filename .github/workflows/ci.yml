@@ -2,10 +2,9 @@ name: CI
 
 on:
   push:
-    branches:
+      branches:
       - main
       - master
-  pull_request: {}
 
 concurrency:
    group: ci-${{ github.head_ref || github.ref }}
@@ -13,33 +12,42 @@ concurrency:
 
 jobs:
   lint:
-    name: "Lint"
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16]
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 12.x
-          cache: yarn
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
-      - name: Lint
-        run: yarn lint
-
+    - uses: actions/checkout@v2
+    - uses: pnpm/action-setup@v2.2.2
+      with:
+        version: 7
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    - name: Lint
+      run: pnpm lint
+  
   test:
-    name: "Test"
-    runs-on: ubuntu-latest
-
+    needs: [lint]
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16]
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 12.x
-          cache: yarn
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
-      - name: Run Tests
-        run: yarn test
+    - uses: actions/checkout@v2
+    - uses: pnpm/action-setup@v2.2.2
+      with:
+        version: 7
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
+    - name: Test
+      run: pnpm test:ember
