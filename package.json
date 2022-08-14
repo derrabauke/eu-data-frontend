@@ -78,6 +78,10 @@
     "@crowdstrike/ember-toucan-styles": "^1.0.5",
     "@crowdstrike/tailwind-toucan-base": "^3.3.0",
     "ember-browser-services": "^4.0.3",
+    "graphology": "^0.24.1",
+    "graphology-neo4j": "^1.2.0",
+    "neo4j-driver": "^4.4.7",
+    "sigma": "^2.3.1",
     "tw-elements": "1.0.0-alpha12"
   }
 }

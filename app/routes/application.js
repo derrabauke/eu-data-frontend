@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 export default class ApplicationRoute extends Route {
   @service router;
 
-  redirect(){
-    this.router.transitionTo("editor");
+  redirect() {
+    this.router.transitionTo('editor');
   }
 }
