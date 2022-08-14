@@ -2,13 +2,17 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import * as neo4j from 'neo4j-driver';
 import { SESSION_EXPIRED } from 'neo4j-driver';
+import { TrackedObject } from 'tracked-built-ins';
 
 export default class SessionService extends Service {
   @service cookies;
   @service router;
 
+  _driver;
+
   options = {
     path: window.location.hostname,
+    SameSite: 'Strict',
   };
 
   get isAuthenticated() {
@@ -19,23 +23,32 @@ export default class SessionService extends Service {
     );
   }
 
-  initDriver() {
-    if (!this.driver) {
-      const username = this.cookies.read('username');
-      const password = this.cookies.read('password');
-      const dbUrl = this.cookies.read('db-url');
-
-      this.driver = neo4j.driver(dbUrl, neo4j.auth.basic(username, password));
+  get driver() {
+    if (!this._driver && this.isAuthenticated) {
+      this.initDriver();
     }
+    return this._driver;
+  }
+
+  initDriver() {
+    const username = this.cookies.read('username');
+    const password = this.cookies.read('password');
+    const dbUrl = this.cookies.read('db-url');
+
+    this._driver = new TrackedObject(
+      neo4j.driver(dbUrl, neo4j.auth.basic(username, password))
+    );
   }
 
   async verifySession() {
-    this.initDriver();
-    const sessionState = await this.driver.verifyConnectivity();
-    if (sessionState === SESSION_EXPIRED) {
-      this.driver.session();
-    } else {
-      throw new Error(sessionState);
+    try {
+      await this.driver.verifyConnectivity();
+    } catch (e) {
+      if (e === SESSION_EXPIRED) {
+        this.driver.session();
+      } else {
+        console.error(e);
+      }
     }
   }
 
@@ -70,7 +83,10 @@ export default class SessionService extends Service {
 
   async logout() {
     this.cookies.clear('password', this.options);
-    await this.driver.close();
+    this.cookies.clear('username', this.options);
+    this.cookies.clear('db-url', this.options);
+    await this.driver?.close();
+    this.router.transitionTo('login');
   }
 
   redirectTarget(target) {

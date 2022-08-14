@@ -1,9 +1,20 @@
 import Controller from '@ember/controller';
-// import * as neo4j from 'neo4j-driver';
-// import Graph from 'graphology';
-// import { cypherToGraph } from 'graphology-neo4j';
+import { inject as service } from '@ember/service';
+import Graph from 'graphology';
+// import Sigma from 'sigma';
+// import { Coordinates, EdgeDisplayData, NodeDisplayData } from 'sigma/types';
+// import { task as trackedTask } from 'ember-resources/util/ember-concurrency';
+// import { task } from 'ember-concurrency';
 
 export default class EditorController extends Controller {
-  // driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("neo4j", "admin"));
-  // graph = await cypherToGraph({ driver }, "MATCH (n)-[r]->(m) RETURN n,r,m");
+  @service graph;
+
+  constructor(...args) {
+    super(...args);
+
+    this.canvas = document.getElementById('canvas');
+    this.localGraph = new Graph();
+
+    this.graph.fetchGraph.perform();
+  }
 }

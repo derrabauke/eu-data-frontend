@@ -1,0 +1,39 @@
+<div ...attributes>
+  <button class="z-10 float-left inline-block px-6 py-2.5 bg-graph-1 text-white align-baseline font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
+    <span class="align-middle">Query Settings</span> 
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="play-caret" class="inline mx-1 w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M176 354.9V157.1c0-10.7 13-16.1 20.5-8.5l98.3 98.9c4.7 4.7 4.7 12.2 0 16.9l-98.3 98.9c-7.5 7.7-20.5 2.3-20.5-8.4zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/>
+    </svg>
+  </button>
+
+  <div class="offcanvas offcanvas-start fixed bottom-0 flex flex-col max-w-full bg-basement invisible bg-clip-padding shadow-sm outline-none transition duration-300 ease-in-out text-gray-700 top-12 left-0 border border-graph-1 w-96" tabindex="-1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
+    <div class="offcanvas-header flex items-center justify-between p-4">
+      <h5 class="offcanvas-title mb-0 leading-normal font-semibold" id="offcanvasLeftLabel">Query Settings</h5>
+      <button type="button" class="btn-close box-content w-4 h-4 p-2 -my-5 -mr-2 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body flex-grow p-4 overflow-y-auto">
+      <select
+        class="form-select appearance-none
+          block
+          w-full
+          px-3
+          py-1.5
+          text-base
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding bg-no-repeat
+          border border-solid border-gray-300
+          rounded
+          transition
+          ease-in-out
+          m-0
+          focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Select the query"
+        {{on "change" this.selectQuery}}>
+        {{#each this.queries as |query|}}
+          <option value={{query.value}}>
+            {{query.label}}
+          </option>
+        {{/each}}  
+      </select>  
+    </div>
+  </div>
+</div>

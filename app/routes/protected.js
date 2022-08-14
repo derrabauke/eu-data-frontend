@@ -6,7 +6,7 @@ export default class ProtectedRoute extends Route {
   @service router;
 
   async beforeModel(transition) {
-    if (!this.session.isAuthenticated) {
+    if (!this.session.isAuthenticated && (await this.session.validate())) {
       const target = transition.to.name;
       this.session.redirectTarget(target ?? 'editor');
       this.router.transitionTo('login');
