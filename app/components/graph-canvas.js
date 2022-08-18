@@ -4,11 +4,11 @@ import Graph from 'graphology';
 import Sigma from 'sigma';
 import { circular } from 'graphology-layout';
 import forceAtlas2 from 'graphology-layout-forceatlas2';
+import FA2Layout from 'graphology-layout-forceatlas2/worker';
 import { restartableTask } from 'ember-concurrency';
 import { timeout } from 'ember-concurrency';
 
 export default class GraphCanvasComponent extends Component {
-
   constructor(...args) {
     super(...args);
 
@@ -34,7 +34,7 @@ export default class GraphCanvasComponent extends Component {
 
     //clear all existing edgese and nodes from the graph
     // !This deletes all computed properties and layouts as well!
-    this.graph.clear()
+    this.graph.clear();
     // import graph data to graphology graph object
     yield this.graph.import(this.args.graph);
 
@@ -44,22 +44,21 @@ export default class GraphCanvasComponent extends Component {
 
     // ontop of the random starting coordinates the forceAtlas2
     // layout algorithm will be performed
-    yield forceAtlas2.assign(this.graph, {
+    if (this.faLayout && this.faLayout.isRunning()) {
+      this.faLayout.kill();
+    }
+
+    const sensibleSettings = forceAtlas2.inferSettings(this.graph);
+    this.faLayout = new FA2Layout(this.graph, {
       iterations: 20,
-      settings: {
-        gravity: 10,
-      },
+      settings: { ...sensibleSettings, gravity: 10 },
     });
 
-    // THIS COULD BE USED FOR BETTER TUNING THE LAYOUT SETTIN
-    // // THIS COULD BE USED FOR BETTER TUNING THE LAYOUT SETTINGS
-    // const sensibleSettings = forceAtlas2.inferSettings(graph);
-    // const positions = forceAtlas2(graph, {
-    //   iterations: 50,
-    //   settings: sensibleSettings,
-    // });
+    this.faLayout.start();
 
-    // console.log("positions", positions);
+    yield timeout(5000);
+
+    this.faLayout.stop();
 
     // Measure performance for layout processing
     const endMark = performance.mark('layout-end');
