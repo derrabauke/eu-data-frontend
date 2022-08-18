@@ -26,7 +26,10 @@ export default class GraphCanvasComponent extends Component {
       console.error('No graph data to render!');
       return;
     }
-    const startMark = performance.mark('layout-start');
+
+    // track performance for this processing
+    performance.clearMarks()
+    performance.mark('layout-start');
 
     // set a timeout before graph algorithm blocks runloop
     // so the loading spinner will display
@@ -50,7 +53,7 @@ export default class GraphCanvasComponent extends Component {
 
     const sensibleSettings = forceAtlas2.inferSettings(this.graph);
     this.faLayout = new FA2Layout(this.graph, {
-      iterations: 20,
+      iterations: 50,
       settings: { ...sensibleSettings, gravity: 10 },
     });
 
@@ -61,13 +64,14 @@ export default class GraphCanvasComponent extends Component {
     this.faLayout.stop();
 
     // Measure performance for layout processing
-    const endMark = performance.mark('layout-end');
+    performance.mark('layout-end');
     const duration =
-      performance.measure('Layout Computation Duration', {
-        startMark,
-        endMark,
-      }).duration / 1000;
-    console.log(`Layout processing took: ${duration.toFixed(5)} seconds`);
+      performance.measure(
+        'Layout Computation Duration',
+        'layout-start',
+        'layout-end'
+      ).duration / 1000;
+    console.log(`Layout processing took: ${duration.toFixed(5)} seconds (including 5 secs artificial timeout)`);
     performance.clearMarks();
 
     if (!this.renderer) {
