@@ -36,6 +36,7 @@ export default class GraphCanvasComponent extends Component {
     // add random circular coordinates for every node
     // they need to be assigned as a starting point
     circular.assign(graph);
+
     // ontop of the random starting coordinates the forceAtlas2
     // layout algorithm will be performed
     console.log('Starting forceAtlas2 layout process...');

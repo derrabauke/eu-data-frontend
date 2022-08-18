@@ -1,7 +1,6 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import * as neo4j from 'neo4j-driver';
-import { SESSION_EXPIRED } from 'neo4j-driver';
 import { TrackedObject } from 'tracked-built-ins';
 
 export default class SessionService extends Service {
@@ -44,7 +43,7 @@ export default class SessionService extends Service {
     try {
       await this.driver.verifyConnectivity();
     } catch (e) {
-      if (e === SESSION_EXPIRED) {
+      if (e === 'SessionExpired') {
         this.driver.session();
       } else {
         console.error(e);
