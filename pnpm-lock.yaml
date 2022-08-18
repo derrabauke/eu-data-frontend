@@ -11,6 +11,7 @@ specifiers:
   '@embroider/webpack': ^1.0.0
   '@glimmer/component': ^1.0.4
   '@glimmer/tracking': ^1.0.4
+  '@tailwindcss/typography': ^0.5.4
   babel-eslint: ^10.1.0
   broccoli-asset-rev: ^3.0.0
   ember-auto-import: ^2.4.0
@@ -86,6 +87,7 @@ devDependencies:
   '@embroider/webpack': 1.8.3_6ieuvvsbaka5ylmi63qvoovikm
   '@glimmer/component': 1.1.2_@babel+core@7.18.10
   '@glimmer/tracking': 1.1.2
+  '@tailwindcss/typography': 0.5.4_tailwindcss@3.1.8
   babel-eslint: 10.1.0_eslint@7.32.0
   broccoli-asset-rev: 3.0.0
   ember-auto-import: 2.4.2_webpack@5.74.0
@@ -2556,6 +2558,17 @@ packages:
 
   /@simple-dom/interface/1.4.0:
     resolution: {integrity: sha512-l5qumKFWU0S+4ZzMaLXFU8tQZsicHEMEyAxI5kDFGhJsRqDwe0a7/iPA/GdxlGyDKseQQAgIz5kzU7eXTrlSpA==}
+    dev: true
+
+  /@tailwindcss/typography/0.5.4_tailwindcss@3.1.8:
+    resolution: {integrity: sha512-QEdg40EmGvE7kKoDei8zr5sf4D1pIayHj4R31bH3lX8x2BtTiR+jNejYPOkhbmy3DXgkMF9jC8xqNiGFAuL9Sg==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      tailwindcss: 3.1.8
     dev: true
 
   /@tootallnate/once/1.1.2:
@@ -10264,6 +10277,10 @@ packages:
 
   /lodash.isarray/3.0.4:
     resolution: {integrity: sha512-JwObCrNJuT0Nnbuecmqr5DgtuBppuCvGD9lxjFpAzwnVtdGoDQ1zig+5W8k5/6Gcn0gZ3936HDAlGd28i7sOGQ==}
+    dev: true
+
+  /lodash.isplainobject/4.0.6:
+    resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
     dev: true
 
   /lodash.kebabcase/4.1.1:

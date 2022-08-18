@@ -12,7 +12,10 @@ module.exports = {
     path.join(appEntry, relevantFilesGlob),
     '../../node_modules/tw-elements/dist/js/**/*.js',
   ],
-  plugins: [require('tw-elements/dist/plugin')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('tw-elements/dist/plugin'),
+  ],
   presets: [require('@crowdstrike/tailwind-toucan-base')],
   safelist: ['theme-dark', 'theme-light'],
   theme: {

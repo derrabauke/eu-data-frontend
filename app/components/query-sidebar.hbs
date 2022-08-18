@@ -6,34 +6,44 @@
   </button>
 
   <div class="offcanvas offcanvas-start fixed bottom-0 flex flex-col max-w-full bg-basement invisible bg-clip-padding shadow-sm outline-none transition duration-300 ease-in-out text-gray-700 top-12 left-0 border border-graph-1 w-96" tabindex="-1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
-    <div class="offcanvas-header flex items-center justify-between p-4">
-      <h5 class="offcanvas-title mb-0 leading-normal font-semibold" id="offcanvasLeftLabel">Query Settings</h5>
+    <div class="offcanvas-header flex items-center justify-between p-4 prose">
+      <h2 class="offcanvas-title mb-0" id="offcanvasLeftLabel">Query Settings</h2>
       <button type="button" class="btn-close box-content w-4 h-4 p-2 -my-5 -mr-2 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body flex-grow p-4 overflow-y-auto">
+    <div class="offcanvas-body flex-grow p-4 overflow-y-auto prose">
       <select
-        class="form-select appearance-none
-          block
-          w-full
-          px-3
-          py-1.5
-          text-base
-          font-normal
-          text-gray-700
-          bg-white bg-clip-padding bg-no-repeat
-          border border-solid border-gray-300
-          rounded
-          transition
-          ease-in-out
-          m-0
-          focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Select the query"
-        {{on "change" this.selectQuery}}>
+        class="form-select appearance-none block w-full mb-5 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Select the query"
+        {{on "change" this.selectQuery}}
+      >
         {{#each this.queries as |query|}}
           <option selected={{(eq query.id this.selectedQueryId)}} value={{query.id}}>
             {{query.label}}
           </option>
         {{/each}}  
       </select>  
+
+      <label for="queryString" class="form-label inline-block mb-2 text-gray-700"
+      >Resulting Query String</label>
+      <textarea
+      class="form-control block w-full px-3 py-1.5 text-disabled font-normal bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      id="queryString"
+      rows="3"
+      disabled 
+      value={{this.graph.queryString}} 
+      placeholder="The resulting query string"
+      />
+
+      <h3>Query Variables</h3>
+      {{#each-in this.queryVariables as |name value|}}
+        <label for={{name}} class="form-label inline-block mb-2 text-gray-700">{{value.label}}</label>
+        <Input 
+          id={{name}}
+          value={{value.value}}
+          {{on "input" (perform this.overrideQueryVariable name)}}
+          class="form-control block w-full px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        />
+      {{/each-in}}
+
     </div>
   </div>
 </div>
