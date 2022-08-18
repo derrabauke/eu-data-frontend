@@ -17,4 +17,8 @@ export default class EditorController extends Controller {
 
     this.graph.fetchGraph.perform();
   }
+
+  get latestGraph() {
+    return this.graph.latestGraph.value;
+  }
 }

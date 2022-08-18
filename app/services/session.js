@@ -62,7 +62,7 @@ export default class SessionService extends Service {
     } catch (e) {
       console.error(e);
       return Promise.reject(
-        'Some went wrong while validating the DB connectiviy.'
+        'Something went wrong while validating the DB connectiviy.'
       );
     }
   }
@@ -86,6 +86,7 @@ export default class SessionService extends Service {
     this.cookies.clear('username', this.options);
     this.cookies.clear('db-url', this.options);
     await this.driver?.close();
+    this._driver = null;
     this.router.transitionTo('login');
   }
 
