@@ -86,6 +86,7 @@
     "graphology-layout": "^0.6.0",
     "graphology-layout-forceatlas2": "^0.9.2",
     "graphology-neo4j": "^1.2.0",
+    "iwanthue": "^2.0.0",
     "neo4j-driver": "^4.4.7",
     "sigma": "^2.3.1",
     "tracked-built-ins": "^3.1.0",

@@ -9,9 +9,13 @@ export default class QuerySidebarComponent extends Component {
     return this.graph.queries;
   }
 
+  get selectedQueryId() {
+    return this.graph.queryId;
+  }
+
   @action
   selectQuery(event) {
     event.preventDefault();
-    this.graph.query = event.target.value;
+    this.graph.queryId = event.target.value;
   }
 }

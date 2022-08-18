@@ -29,7 +29,7 @@
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Select the query"
         {{on "change" this.selectQuery}}>
         {{#each this.queries as |query|}}
-          <option value={{query.value}}>
+          <option selected={{(eq query.id this.selectedQueryId)}} value={{query.id}}>
             {{query.label}}
           </option>
         {{/each}}  

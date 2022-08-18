@@ -22,7 +22,7 @@ export default class GraphCanvasComponent extends Component {
       console.error('No graph data to render!');
       return;
     }
-    const startMark = performance.mark("layout-start")
+    const startMark = performance.mark('layout-start');
 
     // set a timeout before graph algorithm blocks runloop
     // so the loading spinner will display
@@ -58,9 +58,11 @@ export default class GraphCanvasComponent extends Component {
     // Measure performance for layout processing
     const endMark = performance.mark('layout-end');
     const duration =
-      performance.measure('Layout Computation Duration', { startMark, endMark })
-        .duration / 1000;
-    console.log(`Layou processing took: ${duration.toFixed(5)} seconds`);
+      performance.measure('Layout Computation Duration', {
+        startMark,
+        endMark,
+      }).duration / 1000;
+    console.log(`Layout processing took: ${duration.toFixed(5)} seconds`);
     performance.clearMarks();
 
     return new Sigma(graph, this.canvas);
