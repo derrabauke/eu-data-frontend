@@ -8,7 +8,7 @@ import { restartableTask } from 'ember-concurrency';
 
 const QUERIES = [
   {
-    value: 'MATCH (n)-[r]->(m) RETURN n,r,m LIMIT 100',
+    value: 'MATCH (n)-[r]->(m) RETURN n,r,m LIMIT 1000',
     label: 'Query 1',
   },
   {
@@ -40,7 +40,6 @@ export default class GraphService extends Service {
 
   @restartableTask
   *fetchGraph() {
-    console.log('fetching graph');
     const driver = this.session.driver;
     const graph = yield cypherToGraph(
       { driver },

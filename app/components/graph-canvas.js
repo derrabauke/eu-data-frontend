@@ -22,15 +22,14 @@ export default class GraphCanvasComponent extends Component {
       console.error('No graph data to render!');
       return;
     }
+    const startMark = performance.mark("layout-start")
 
     // set a timeout before graph algorithm blocks runloop
     // so the loading spinner will display
     yield timeout(250);
 
-    console.log('current graph args', this.args.graph);
-
     let graph = new Graph();
-    console.log('Importing graph data into new graphology graph');
+    // import graph data to graphology graph object
     yield graph.import(this.args.graph);
 
     // add random circular coordinates for every node
@@ -39,16 +38,12 @@ export default class GraphCanvasComponent extends Component {
 
     // ontop of the random starting coordinates the forceAtlas2
     // layout algorithm will be performed
-    console.log('Starting forceAtlas2 layout process...');
     yield forceAtlas2.assign(graph, {
       iterations: 50,
       settings: {
         gravity: 10,
       },
     });
-
-    console.log('Finished layout process');
-    console.log('Resulting graph', graph);
 
     // THIS COULD BE USED FOR BETTER TUNING THE LAYOUT SETTIN
     // // THIS COULD BE USED FOR BETTER TUNING THE LAYOUT SETTINGS
@@ -59,6 +54,15 @@ export default class GraphCanvasComponent extends Component {
     // });
 
     // console.log("positions", positions);
+
+    // Measure performance for layout processing
+    const endMark = performance.mark('layout-end');
+    const duration =
+      performance.measure('Layout Computation Duration', { startMark, endMark })
+        .duration / 1000;
+    console.log(`Layou processing took: ${duration.toFixed(5)} seconds`);
+    performance.clearMarks();
+
     return new Sigma(graph, this.canvas);
   }
 }
