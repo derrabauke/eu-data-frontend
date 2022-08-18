@@ -2,10 +2,7 @@
 
 <SearchBar class="z-10 absolute top-1 left-1 right-1" />
 
-<div id="canvas" class="-z-5 absolute inset-0 top-11 bg-basement">
-  {{!-- {{log this.graph.latest}} --}}
-  {{log this.latestGraph}}
-</div>
+<GraphCanvas @graph={{this.graph.latestGraph.value}} />
 
 <QuerySidebar class="mx-1 mt-12" />
 <GraphSidebar class="mx-1 mt-12" />

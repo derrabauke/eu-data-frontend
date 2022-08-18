@@ -4,6 +4,7 @@ specifiers:
   '@crowdstrike/ember-toucan-styles': ^1.0.5
   '@crowdstrike/tailwind-toucan-base': ^3.3.0
   '@ember/optional-features': ^2.0.0
+  '@ember/render-modifiers': ^2.0.4
   '@ember/test-helpers': ^2.6.0
   '@embroider/compat': ^1.0.0
   '@embroider/core': ^1.0.0
@@ -43,6 +44,8 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-qunit: ^7.2.0
   graphology: ^0.24.1
+  graphology-layout: ^0.6.0
+  graphology-layout-forceatlas2: ^0.9.2
   graphology-neo4j: ^1.2.0
   loader.js: ^4.7.0
   neo4j-driver: ^4.4.7
@@ -59,11 +62,14 @@ specifiers:
 dependencies:
   '@crowdstrike/ember-toucan-styles': 1.0.5_4clrsqstlwnh44cx4usiglshie
   '@crowdstrike/tailwind-toucan-base': 3.3.0_25hquoklqeoqwmt7fwvvcyxm5e
+  '@ember/render-modifiers': 2.0.4_jv55u7n35wtqghjunnzn6ikvju
   ember-browser-services: 4.0.3
   ember-concurrency: 2.2.1_@babel+core@7.18.10
   ember-power-select: 6.0.0_jv55u7n35wtqghjunnzn6ikvju
   ember-resources: 5.2.1_vb4bymi2rb7r3zd4lmip42wrgq
   graphology: 0.24.1_graphology-types@0.24.4
+  graphology-layout: 0.6.0_graphology-types@0.24.4
+  graphology-layout-forceatlas2: 0.9.2_graphology-types@0.24.4
   graphology-neo4j: 1.2.0_ft5fc34zxn2hujypv6hm2spjuu
   neo4j-driver: 4.4.7
   sigma: 2.3.1_graphology-types@0.24.4
@@ -8943,6 +8949,25 @@ packages:
     resolution: {integrity: sha512-8tLu60LgxF6XpdbK8OW3FA+IfTNBn1ZHGHKF4KQbEeSkajYw5PlYJcKluntgegDPTg8UkHjpet1T82vk6TQ68w==}
     dev: true
 
+  /graphology-layout-forceatlas2/0.9.2_graphology-types@0.24.4:
+    resolution: {integrity: sha512-VUF1xGnoq5qT0Svo03Bn4a31bA1ofPjakwpILD72J2N5t6g66hLQq/r8TKIx041DN7DATQZ0v6LnrA6Iyqs/Ow==}
+    peerDependencies:
+      graphology-types: '>=0.19.0'
+    dependencies:
+      graphology-types: 0.24.4
+      graphology-utils: 2.5.2_graphology-types@0.24.4
+    dev: false
+
+  /graphology-layout/0.6.0_graphology-types@0.24.4:
+    resolution: {integrity: sha512-QZIminJVOqOFHBOf6qEjcMp0m+BNP4/XqY1jrnJhH+fmUHFtNDdTPSXYhVa8Hr3AN5bOPP1Zte5oY1ZzOyzhvA==}
+    peerDependencies:
+      graphology-types: '>=0.19.0'
+    dependencies:
+      graphology-types: 0.24.4
+      graphology-utils: 2.5.2_graphology-types@0.24.4
+      pandemonium: 1.5.0
+    dev: false
+
   /graphology-neo4j/1.2.0_ft5fc34zxn2hujypv6hm2spjuu:
     resolution: {integrity: sha512-3UDc8eROBhAMpFAiK3yqCA45HadrwWAAESp7H00YDAlIEreHTabEmpdnjdA2Ct8riUKJeOKtyxLedbNttGf9dQ==}
     peerDependencies:
@@ -11192,6 +11217,10 @@ packages:
   /pako/1.0.11:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
     dev: true
+
+  /pandemonium/1.5.0:
+    resolution: {integrity: sha512-9PU9fy93rJhZHLMjX+4M1RwZPEYl6g7DdWKGmGNhkgBZR5+tOBVExNZc00kzdEGMxbaAvWdQy9MqGAScGwYlcA==}
+    dev: false
 
   /parallel-transform/1.2.0:
     resolution: {integrity: sha512-P2vSmIu38uIlvdcU7fDkyrxj33gTUy/ABO5ZUbGowxNCopBq/OoD42bP4UmMrJoPyk4Uqf0mu3mtWBhHCZD8yg==}

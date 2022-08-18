@@ -1,10 +1,10 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { lastValue } from 'ember-concurrency';
+// import { lastValue } from 'ember-concurrency';
 import { cypherToGraph } from 'graphology-neo4j';
 import { task as trackedTask } from 'ember-resources/util/ember-concurrency';
-import {restartableTask} from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency';
 
 const QUERIES = [
   {
@@ -25,7 +25,8 @@ export default class GraphService extends Service {
 
   queries = QUERIES;
 
-  @lastValue('fetchGraph') latest;
+  // @lastValue('fetchGraph') latest;
+
   latestGraph = trackedTask(this, this.fetchGraph, () => [this.query]);
 
   set query(query) {
