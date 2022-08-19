@@ -1,36 +1,48 @@
-name: Deploy
+ # Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
 
 on:
-  push:
-      branches:
-      - pages
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
 concurrency:
-   group: deploy
-   cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: true
 
 env:
   NODE_VERSION: 16
 
 jobs:
+  # Single deploy job since we're just deploying
   deploy:
-    runs-on: ubuntu-20.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: pnpm/action-setup@v2.2.2
-      with:
-        version: 7
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'pnpm'
-    - name: Install dependencies
-      run: pnpm install
-    - name: Deploy
-      run: pnpm build
-    - name: Upload GitHub Pages artifact
-      uses: actions/upload-pages-artifact@v1.0.3
-      with:
-        path: 'dist/'
-        retention-days: 999
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Deploy
+        run: pnpm build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist  # default: public
