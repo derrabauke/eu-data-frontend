@@ -29,7 +29,8 @@ jobs:
       run: pnpm install
     - name: Deploy
       run: pnpm build
-    - name: Copy
-      run: |-
-        mkdir -p docs/
-        cp dist/* docs/ -r
+    - name: Upload GitHub Pages artifact
+      uses: actions/upload-pages-artifact@v1.0.3
+      with:
+        path: 'dist/'
+        retention-days: 999
