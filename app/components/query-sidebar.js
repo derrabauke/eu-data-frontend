@@ -1,8 +1,8 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import {restartableTask} from 'ember-concurrency';
-import {timeout} from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency';
+import { timeout } from 'ember-concurrency';
 
 export default class QuerySidebarComponent extends Component {
   @service graph;
@@ -16,7 +16,7 @@ export default class QuerySidebarComponent extends Component {
   }
 
   get queryVariables() {
-    return this.graph.query?.variables
+    return this.graph.query?.variables;
   }
 
   @restartableTask

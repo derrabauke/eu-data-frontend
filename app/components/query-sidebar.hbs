@@ -16,13 +16,40 @@
         {{on "change" this.selectQuery}}
       >
         {{#each this.queries as |query|}}
-          <option selected={{(eq query.id this.selectedQueryId)}} value={{query.id}}>
+          <option selected={{(is-equal query.id this.selectedQueryId)}} value={{query.id}}>
             {{query.label}}
           </option>
         {{/each}}  
       </select>  
+      {{#if this.graph.query.description}}
+        <label for="queryDescription" class="form-label inline-block my-2 text-gray-700"
+        >Description</label>
+        <p
+        class="form-control block w-full px-3 py-1.5 font-normal bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        id="queryDescription"
+        >{{this.graph.query.description}}</p>
+      {{/if}}
 
-      <label for="queryString" class="form-label inline-block mb-2 text-gray-700"
+      
+
+    {{#if this.queryVariables}}
+      <h3>Query Variables</h3>
+      <div class="mb-36">
+        {{#each-in this.queryVariables as |name value|}}
+          <label for={{name}} class="form-label inline-block mb-2 text-gray-700">{{value.label}}</label>
+          <Input 
+            id={{name}}
+            value={{value.value}}
+            placeholder={{value.value}}
+            {{on "input" (perform this.overrideQueryVariable name)}}
+            class="form-control block w-full px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          />
+        {{/each-in}}
+      </div>
+    {{/if}}
+
+    <div class="fixed inset-x-0 bottom-0 p-4 w-96">
+      <label for="queryString" class="form-label inline-block my-2 text-gray-700"
       >Resulting Query String</label>
       <textarea
       class="form-control block w-full px-3 py-1.5 text-disabled font-normal bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -32,18 +59,7 @@
       value={{this.graph.queryString}} 
       placeholder="The resulting query string"
       />
-
-      <h3>Query Variables</h3>
-      {{#each-in this.queryVariables as |name value|}}
-        <label for={{name}} class="form-label inline-block mb-2 text-gray-700">{{value.label}}</label>
-        <Input 
-          id={{name}}
-          value={{value.value}}
-          {{on "input" (perform this.overrideQueryVariable name)}}
-          class="form-control block w-full px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-        />
-      {{/each-in}}
-
+      </div>
     </div>
   </div>
 </div>

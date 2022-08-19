@@ -12,7 +12,7 @@ export default class GraphCanvasComponent extends Component {
   constructor(...args) {
     super(...args);
 
-    this.graph = new Graph();
+    this.graph = new Graph({ multi: true });
   }
 
   @action
@@ -28,12 +28,8 @@ export default class GraphCanvasComponent extends Component {
     }
 
     // track performance for this processing
-    performance.clearMarks()
+    performance.clearMarks();
     performance.mark('layout-start');
-
-    // set a timeout before graph algorithm blocks runloop
-    // so the loading spinner will display
-    yield timeout(250);
 
     //clear all existing edgese and nodes from the graph
     // !This deletes all computed properties and layouts as well!
@@ -65,13 +61,17 @@ export default class GraphCanvasComponent extends Component {
 
     // Measure performance for layout processing
     performance.mark('layout-end');
-    const duration =
-      performance.measure(
-        'Layout Computation Duration',
-        'layout-start',
-        'layout-end'
-      ).duration / 1000;
-    console.log(`Layout processing took: ${duration.toFixed(5)} seconds (including 5 secs artificial timeout)`);
+    let duration = performance.measure(
+      'Layout Computation Duration',
+      'layout-start',
+      'layout-end'
+    ).duration;
+    duration = duration / 1000 - 5;
+    console.log(
+      `Layout processing took: ${duration.toFixed(
+        5
+      )} seconds (excluding 5 secs artificial timeout)`
+    );
     performance.clearMarks();
 
     if (!this.renderer) {
