@@ -23,7 +23,7 @@ export default class QuerySidebarComponent extends Component {
   *overrideQueryVariable(key, event) {
     // debounce user input
     yield timeout(500);
-    this.graph.overrideQueryVariable(key, event.target.value)
+    this.graph.overrideQueryVariable(key, event.target.value);
   }
 
   @action
