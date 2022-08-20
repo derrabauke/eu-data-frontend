@@ -33,7 +33,7 @@
      </button>
 
       
-      <label for="gravity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Gravity</label>
+     <label for="gravity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Gravity: {{this.renderService.gravity}}</label>
       <input 
         id="gravity"
         type="range"
@@ -44,13 +44,13 @@
         {{on "input" (fn this.updateSetting "gravity")}}
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
       
-      <label for="scalingRatio" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scaling Ration</label>
+      <label for="scalingRatio" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scaling Ration: {{this.renderService.scalingRatio}}</label>
       <input 
         id="scalingRatio"
         type="range"
         min="0"
-        max="10"
-        step="0.5"
+        max="50"
+        step="1"
         value={{this.renderService.scalingRatio}}
         {{on "input" (fn this.updateSetting "scalingRatio")}}
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
@@ -68,7 +68,7 @@
         <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Barnes Hut Optimize</span>
       </label>
 
-        <label for="barnesHutTheta" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Barnes Hut Theta</label>
+      <label for="barnesHutTheta" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Barnes Hut Theta: {{this.renderService.barnesHutTheta}}</label>
       <input 
         id="barnesHutTheta"
         type="range"
@@ -90,7 +90,7 @@
         <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">LinLog Mode</span>
       </label>
 
-      <label for="edgeWeightInfluence" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Edge Weight Influence</label>
+      <label for="edgeWeightInfluence" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Edge Weight Influence: {{this.renderService.edgeWeightInfluence}}</label>
       <input 
         id="edgeWeightInfluence"
         type="range"
@@ -101,7 +101,7 @@
         {{on "input" (fn this.updateSetting "edgeWeightInfluence")}}
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
 
-       <label for="iterations" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Layout Iterations</label>
+      <label for="iterations" class="block my-2 text-sm font-medium text-gray-900 dark:text-gray-300">Layout Iterations: {{this.renderService.iterations}}</label>
       <input 
         id="iterations"
         type="range"
@@ -113,6 +113,7 @@
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
 
       <hr/>
+      <h4>Further Ideas what could be configurable:</h4>
       <p>Checkboxes for further filtering?</p>
       <p>Strongly connected components?</p>
       <p>Only keep largest components?</p>

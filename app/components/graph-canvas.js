@@ -36,7 +36,11 @@ export default class GraphCanvasComponent extends Component {
   }
 
   @restartableTask
-  *rendererForGraph() {
+  *rendererForGraph(...args) {
+    const skipInitialization = args[2].skipInitialization
+    // debounce any rendering request
+    yield timeout(800);
+
     if (!this.args.graph) {
       console.error('No graph data to render!');
       return;
@@ -45,17 +49,19 @@ export default class GraphCanvasComponent extends Component {
     // track performance for this processing
     logPerformancenStart('layout');
 
-    //clear all existing edgese and nodes from the graph
-    // !This deletes all computed properties and layouts as well!
-    this.graph.clear();
-    // import graph data to graphology graph object
-    yield this.graph.import(this.args.graph);
+    if(!skipInitialization) {
+      //clear all existing edgese and nodes from the graph
+      // !This deletes all computed properties and layouts as well!
+      this.graph.clear();
+      // import graph data to graphology graph object
+      yield this.graph.import(this.args.graph);
 
-    // add random circular coordinates for every node
-    // they need to be assigned as a starting point
-    this.graph.size > 50
-      ? random.assign(this.graph)
-      : circular.assign(this.graph);
+      // add random circular coordinates for every node
+      // they need to be assigned as a starting point
+      this.graph.size > 50
+        ? random.assign(this.graph)
+        : circular.assign(this.graph);
+    }
 
     // ontop of the random starting coordinates the forceAtlas2
     // layout algorithm will be performed
@@ -75,10 +81,10 @@ export default class GraphCanvasComponent extends Component {
     // } else {
     const sensibleSettings = forceAtlas2.inferSettings(this.graph);
     this.faLayout = new FA2Layout(this.graph, {
-      iterations: this.renderService.iterations,
+      iterations: this.renderService.configuration.iterations,
       settings: {
         ...sensibleSettings,
-        ...this.renderService.renderSettings,
+        ...this.renderService.configuration.settings,
       },
     });
 

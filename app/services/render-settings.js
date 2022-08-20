@@ -12,17 +12,21 @@ export default class RenderSettingsService extends Service {
   @tracked edgeWeightInfluence= 0;
   @tracked iterations = 50;
 
-  get renderSettings() {
+  get configuration() {
     return {
-      gravity: this.gravity,
-      //Pulls the network more appart
-      scalingRatio: this.scalingRatio,
-      // separates the hubs further apart
-      barnesHutOptimize: this.barnesHutOptimize,
-      // increase count of hubs for the internal quadtrees
-      barnesHutTheta: this.barnesHutTheta,
-      edgeWeightInfluence: this.edgeWeightInfluence,
-      linLogMode: this.linLogMode,
+      searchTerm: this.searchTerm,
+      iterations: this.iterations,
+      settings: {
+        gravity: this.gravity,
+        //Pulls the network more appart
+        scalingRatio: this.scalingRatio,
+        // separates the hubs further apart
+        barnesHutOptimize: this.barnesHutOptimize,
+        // increase count of hubs for the internal quadtrees
+        barnesHutTheta: this.barnesHutTheta,
+        edgeWeightInfluence: this.edgeWeightInfluence,
+        linLogMode: this.linLogMode,
+      },
     };
   }
 }
