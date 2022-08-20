@@ -2,6 +2,17 @@
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
+const path = require('path');
+const Funnel = require('broccoli-funnel');
+
+const SRC_FILES = path.join(__dirname, 'dist');
+
+const funnel = () => {
+  return new Funnel(SRC_FILES, {
+    destDir: 'assets/',
+  })
+};
+
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
     // Add options here
@@ -31,9 +42,10 @@ module.exports = function (defaults) {
     // staticComponents: true,
     // splitAtRoutes: ['route.name'], // can also be a RegExp
     packagerOptions: {
-      publicAssetURL: EmberApp.env() === 'production' ? './' : '/',
+      publicAssetURL:
+        EmberApp.env() === 'production' ? EmberApp.env().rootURL : '/',
       // webpackConfig: {},
     },
-    extraPublicTrees: [],
+    extraPublicTrees: [funnel()],
   });
 };
