@@ -20,6 +20,7 @@ import {
 
 export default class GraphCanvasComponent extends Component {
   @service('query') queryService;
+  @service('render-settings') renderService;
 
   @tracked hoveredEdge = null;
 
@@ -74,18 +75,10 @@ export default class GraphCanvasComponent extends Component {
     // } else {
     const sensibleSettings = forceAtlas2.inferSettings(this.graph);
     this.faLayout = new FA2Layout(this.graph, {
-      iterations: 50,
+      iterations: this.renderService.iterations,
       settings: {
         ...sensibleSettings,
-        // gravity: 2,
-        //Pulls the network more appart
-        scalingRatio: 5,
-        // separates the hubs further apart
-        barnesHutOptimize: true,
-        // increase count of hubs for the internal quadtrees
-        barnesHutTheta: 2,
-        // edgeWeightInfluence: 2,
-        linLogMode: true,
+        ...this.renderService.renderSettings,
       },
     });
 
