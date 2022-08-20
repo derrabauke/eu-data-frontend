@@ -31,7 +31,7 @@ module.exports = function (defaults) {
     // staticComponents: true,
     // splitAtRoutes: ['route.name'], // can also be a RegExp
     packagerOptions: {
-      publicAssetURL: EmberApp.env() === 'production' ? '.' : '/',
+      publicAssetURL: EmberApp.env() === 'production' ? './' : '/',
       // webpackConfig: {},
     },
     extraPublicTrees: [],
