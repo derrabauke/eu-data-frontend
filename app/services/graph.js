@@ -12,6 +12,7 @@ import {
   getRegisteredQueryFromId,
   QUERIES,
 } from '../queries/queries';
+import { logPerformancenEnd, logPerformancenStart } from '../utils/graphUtils';
 
 export default class GraphService extends Service {
   @service session;
@@ -61,19 +62,13 @@ export default class GraphService extends Service {
     yield timeout(50);
 
     // measure performance for fetching the query results
-    performance.clearMarks();
-    performance.mark('query-start');
+    logPerformancenStart('query');
 
     const driver = this.session.driver;
     const graph = yield cypherToGraph({ driver }, this.queryString);
 
     // performance
-    performance.mark('query-end');
-    const duration =
-      performance.measure('Query fetching results', 'query-start', 'query-end')
-        .duration / 1000;
-    console.log(`Fetching query results took: ${duration.toFixed(5)} seconds.`);
-    performance.clearMarks();
+    logPerformancenEnd('query');
 
     return graph;
   }

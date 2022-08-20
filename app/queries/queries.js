@@ -69,6 +69,19 @@ export const QUERIES = [
     },
   },
   {
+    id: '1',
+    label: 'Cooperating Organizations',
+    description:
+      'Renders the given amount of cooperations between organizations.',
+    template: taggedTemplate`MATCH (a:Organization)-[c:COOPERATES]-(b:Organization) RETURN a,b,c LIMIT ${'limit'}`,
+    variables: {
+      limit: {
+        label: 'Limit result count for query',
+        value: '100',
+      },
+    },
+  },
+  {
     id: '2',
     label: 'Non solitaire Organizations',
     description: '',
