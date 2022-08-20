@@ -44,7 +44,7 @@ module.exports = function (environment) {
   }
 
   if (environment === 'production') {
-    ENV.rootURL = 'https://derrabauke.github.io/eu-data-frontend/';
+    ENV.rootURL = './';
   }
 
   return ENV;

@@ -14,11 +14,14 @@ import {
 } from '../queries/queries';
 import { logPerformancenEnd, logPerformancenStart } from '../utils/graphUtils';
 
+const LAYOUT_ALGORITHMS = ['forceAtlas2', 'louvain'];
+
 export default class GraphService extends Service {
   @service session;
   @service router;
 
   @tracked _queryId;
+  @tracked _layoutAlgorithm = 'forceAtlas2';
 
   _overrides = trackedBuiltIn({});
 
@@ -29,6 +32,20 @@ export default class GraphService extends Service {
     this._overrides,
     this.queryString,
   ]);
+
+  get availableAlgorithms() {
+    return LAYOUT_ALGORITHMS;
+  }
+
+  set layoutAlgorithm(algo) {
+    if (LAYOUT_ALGORITHMS.includes(algo)) {
+      this._layoutAlgorithm = algo;
+    }
+  }
+
+  get layoutAlgorithm() {
+    return this._layoutAlgorithm;
+  }
 
   set queryId(queryId) {
     this._queryId = queryId?.id ?? queryId;

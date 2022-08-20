@@ -12,6 +12,7 @@ import { tracked } from '@glimmer/tracking';
 
 import {
   colorizeByLabel,
+  LABEL_MAPPING,
   logPerformancenEnd,
   logPerformancenStart,
   nodeSizeByDegree,
@@ -63,21 +64,26 @@ export default class GraphCanvasComponent extends Component {
 
     // make the graph more visually comprehensible
     colorizeByLabel(this.graph);
-    nodeSizeByDegree(this.graph);
+    if (this.graph.directedSize > 0) {
+      nodeSizeByDegree(this.graph);
+    }
 
+    // run layout algorithm according to graph settings
+    // if (this.graphService.layoutAlgorithm === 'louvain') {
+    //   louvain.assign(this.graph);
+    // } else {
     const sensibleSettings = forceAtlas2.inferSettings(this.graph);
     this.faLayout = new FA2Layout(this.graph, {
-      // iterations: 50,
-      weighted: true,
+      iterations: 50,
       settings: {
         ...sensibleSettings,
         // gravity: 2,
-        // Pulls the hubs more appart
+        //Pulls the network more appart
         scalingRatio: 5,
         // separates the hubs further apart
         barnesHutOptimize: true,
         // increase count of hubs for the internal quadtrees
-        barnesHutTheta: 4,
+        barnesHutTheta: 2,
         // edgeWeightInfluence: 2,
         linLogMode: true,
       },
@@ -89,6 +95,7 @@ export default class GraphCanvasComponent extends Component {
     yield timeout(Math.log(this.graph.size) * 1000);
 
     this.faLayout.stop();
+    // }
 
     // Measure performance for layout processing
     logPerformancenEnd('layout');
@@ -108,7 +115,8 @@ export default class GraphCanvasComponent extends Component {
 
       const nodeReducer = (node, data) => {
         const res = { ...data };
-        res.label = data.name;
+        res.label =
+          data[LABEL_MAPPING[data['@labels'][0]]] ?? data.title ?? data.name;
         return res;
       };
 

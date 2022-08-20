@@ -1,5 +1,12 @@
 import iwanthue from 'iwanthue';
 
+export const LABEL_MAPPING = {
+  Organization: 'name',
+  EuProject: 'title',
+  Topic: 'topic',
+  Tagline: 'euroSciVocCode',
+};
+
 let LOGGING = true;
 
 export const logStatements = (...messages) => {
@@ -42,8 +49,13 @@ export const colorizeByLabel = (graph) => {
     if (!labelTypes[label]) labelTypes[label] = {};
   });
 
+  const labelCount = Object.keys(labelTypes).length;
+  if (labelCount < 1) {
+    return;
+  }
+
   // create and assign one color by labelType
-  const palette = iwanthue(Object.keys(labelTypes).length, {
+  const palette = iwanthue(labelCount, {
     seed: 'labelTypes',
   });
   for (const type in labelTypes) {

@@ -1,7 +1,7 @@
 const taggedTemplate = (strings, ...keys) => {
   return (...values) => {
     const dict = values[values.length - 1] || {};
-    const result = [strings[0]];
+  const result = [strings[0]];
     keys.forEach((key, i) => {
       const value = Number.isInteger(key) ? values[key] : dict[key];
       result.push(value, strings[i + 1]);
@@ -107,7 +107,7 @@ export const QUERIES = [
       'Shows a spanning tree, where Organizations cooperated together on a single project.',
     template: taggedTemplate`MATCH (p:Organization)
       CALL apoc.path.spanningTree(p, {
-	    relationshipFilter: "PARTICIPATING>|<PARTICIPATING",
+	    relationshipFilter: "PARTICIPATE>|<PARTICIPATE",
 	    minLevel: 1,
 	    maxLevel: ${'maxLevel'}
       })
