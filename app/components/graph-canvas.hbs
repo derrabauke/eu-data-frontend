@@ -3,7 +3,7 @@
   {{did-update (perform this.rendererForGraph) @graph}}
 ></div>
 
-{{#if (or this.graphService.fetchGraph.isRunning this.rendererForGraph.isRunning)}}
+{{#if (or this.queryService.fetchGraph.isRunning this.rendererForGraph.isRunning)}}
   <div class="-z-10 absolute inset-0 bg-gray-700 opacity-30">
     <div class="text-center">
       <div role="status">

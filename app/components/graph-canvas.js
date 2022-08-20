@@ -19,7 +19,7 @@ import {
 } from './../utils/graphUtils';
 
 export default class GraphCanvasComponent extends Component {
-  @service('graph') graphService;
+  @service('query') queryService;
 
   @tracked hoveredEdge = null;
 
@@ -69,7 +69,7 @@ export default class GraphCanvasComponent extends Component {
     }
 
     // run layout algorithm according to graph settings
-    // if (this.graphService.layoutAlgorithm === 'louvain') {
+    // if (this.queryService.layoutAlgorithm === 'louvain') {
     //   louvain.assign(this.graph);
     // } else {
     const sensibleSettings = forceAtlas2.inferSettings(this.graph);

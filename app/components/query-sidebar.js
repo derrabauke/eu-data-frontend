@@ -6,32 +6,32 @@ import { timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 
 export default class QuerySidebarComponent extends Component {
-  @service graph;
+  @service('query') queryService;
 
   @tracked show = false;
 
   get queries() {
-    return this.graph.queries;
+    return this.queryService.queries;
   }
 
   get selectedQueryId() {
-    return this.graph.queryId;
+    return this.queryService.queryId;
   }
 
   get queryVariables() {
-    return this.graph.query?.variables;
+    return this.queryService.query?.variables;
   }
 
   @restartableTask
   *overrideQueryVariable(key, event) {
     // debounce user input
     yield timeout(500);
-    this.graph.overrideQueryVariable(key, event.target.value);
+    this.queryService.overrideQueryVariable(key, event.target.value);
   }
 
   @action
   selectQuery(event) {
     event.preventDefault();
-    this.graph.queryId = event.target.value;
+    this.queryService.queryId = event.target.value;
   }
 }
