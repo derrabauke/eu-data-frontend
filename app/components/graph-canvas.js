@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Graph from 'graphology';
 import Sigma from 'sigma';
 import { circular } from 'graphology-layout';
@@ -9,6 +10,8 @@ import { restartableTask } from 'ember-concurrency';
 import { timeout } from 'ember-concurrency';
 
 export default class GraphCanvasComponent extends Component {
+  @service ('graph') graphService;
+
   constructor(...args) {
     super(...args);
 

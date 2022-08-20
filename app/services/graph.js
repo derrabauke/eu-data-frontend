@@ -18,6 +18,7 @@ export default class GraphService extends Service {
   @service router;
 
   @tracked _queryId;
+
   _overrides = trackedBuiltIn({});
 
   queries = QUERIES;
