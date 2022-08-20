@@ -12,7 +12,7 @@ const taggedTemplate = (strings, ...keys) => {
 
 export const getRegisteredQueryFromId = (queryId) => {
   if (!queryId) {
-    return QUERIES[0];
+    return QUERIES[2];
   }
   const query = QUERIES.find((query) => `${query.id}` === `${queryId}`);
   if (!query) {
@@ -77,7 +77,7 @@ export const QUERIES = [
     variables: {
       limit: {
         label: 'Limit result count for query',
-        value: '100',
+        value: '1000',
       },
     },
   },

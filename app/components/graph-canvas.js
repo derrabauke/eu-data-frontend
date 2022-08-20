@@ -61,10 +61,26 @@ export default class GraphCanvasComponent extends Component {
       this.faLayout.kill();
     }
 
+    // make the graph more visually comprehensible
+    colorizeByLabel(this.graph);
+    nodeSizeByDegree(this.graph);
+
     const sensibleSettings = forceAtlas2.inferSettings(this.graph);
     this.faLayout = new FA2Layout(this.graph, {
-      iterations: 50,
-      settings: { ...sensibleSettings, gravity: 10 },
+      // iterations: 50,
+      weighted: true,
+      settings: {
+        ...sensibleSettings,
+        // gravity: 2,
+        // Pulls the hubs more appart
+        scalingRatio: 5,
+        // separates the hubs further apart
+        barnesHutOptimize: true,
+        // increase count of hubs for the internal quadtrees
+        barnesHutTheta: 4,
+        // edgeWeightInfluence: 2,
+        linLogMode: true,
+      },
     });
 
     this.faLayout.start();
@@ -77,9 +93,7 @@ export default class GraphCanvasComponent extends Component {
     // Measure performance for layout processing
     logPerformancenEnd('layout');
 
-    // make the graph more visually comprehensible
-    colorizeByLabel(this.graph);
-    nodeSizeByDegree(this.graph);
+    // nodeSizeByDegree(this.graph);
 
     if (!this.renderer) {
       const edgeReducer = (edge, data) => {
