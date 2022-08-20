@@ -69,6 +69,7 @@ export default class GraphCanvasComponent extends Component {
 
     this.faLayout.start();
 
+    // reserve some time for layouting depeding on graph size
     yield timeout(Math.log(this.graph.size) * 1000);
 
     this.faLayout.stop();
@@ -76,28 +77,34 @@ export default class GraphCanvasComponent extends Component {
     // Measure performance for layout processing
     logPerformancenEnd('layout');
 
+    // make the graph more visually comprehensible
     colorizeByLabel(this.graph);
     nodeSizeByDegree(this.graph);
 
     if (!this.renderer) {
+      const edgeReducer = (edge, data) => {
+        const res = { ...data };
+        res.label = data['@type'];
+        res.size = data.weight?.low
+          ? Math.max(1, Math.log(data.weight.low)) * 2
+          : res.size;
+        if (edge === this.hoveredEdge) res.color = '#cc0000';
+        return res;
+      };
+
+      const nodeReducer = (node, data) => {
+        const res = { ...data };
+        res.label = data.name;
+        return res;
+      };
+
+      // setup Sigma renderer
       this.renderer = new Sigma(this.graph, this.canvas, {
         enableEdgeClickEvents: true,
         enableEdgeHoverEvents: 'debounce',
         edgeLabelSize: 20,
-        edgeReducer: (edge, data) => {
-          const res = { ...data };
-          res.label = data['@type'];
-          res.size = data.weight?.low
-            ? Math.max(1, Math.log(data.weight.low)) * 2
-            : res.size;
-          if (edge === this.hoveredEdge) res.color = '#cc0000';
-          return res;
-        },
-        nodeReducer: (node, data) => {
-          const res = { ...data };
-          res.label = data.name;
-          return res;
-        },
+        edgeReducer: edgeReducer,
+        nodeReducer: nodeReducer,
         label: { attributes: 'name' },
         labelSize: 25,
         renderLabels: true,
