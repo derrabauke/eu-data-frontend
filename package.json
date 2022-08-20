@@ -76,10 +76,9 @@
     "edition": "octane"
   },
   "dependencies": {
-    "@crowdstrike/ember-toucan-styles": "^1.0.5",
-    "@crowdstrike/tailwind-toucan-base": "^3.3.0",
     "@ember/render-modifiers": "^2.0.4",
     "ember-browser-services": "^4.0.3",
+    "ember-composable-helpers": "^5.0.0",
     "ember-concurrency": "^2.2.1",
     "ember-resources": "^5.2.1",
     "ember-truth-helpers": "^3.1.1",

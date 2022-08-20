@@ -1,12 +1,10 @@
-<div id="canvas" class="-z-5 absolute inset-0 top-11 bg-basement"
+<div id="canvas" class="-z-20 absolute inset-0 top-11 bg-gray-100"
   {{did-insert this.setupCanvas}}
   {{did-update (perform this.rendererForGraph) @graph}}
 ></div>
 
-{{!-- <button class="-z-5 absolute inset-0 top-11 bg-basement" {{on "click" (perform this.rendererForGraph @graph)}}>RENDER</button> --}}
-
 {{#if this.rendererForGraph.isRunning}}
-  <div class="-z-2 absolute inset-0 top-11 bg-current opacity-30">
+  <div class="-z-10 absolute inset-0 top-11 bg-current opacity-30">
     <div class="absolute inset-0 spinner-grow inline-block w-8 h-8 bg-medium rounded-full opacity-0 text-purple-500 mx-auto my-auto" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>

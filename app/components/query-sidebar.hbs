@@ -1,16 +1,38 @@
 <div ...attributes>
-  <button class="z-10 float-left inline-block px-6 py-2.5 bg-graph-1 text-white align-baseline font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft">
-    <span class="align-middle">Query Settings</span> 
-    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="play-caret" class="inline mx-1 w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M176 354.9V157.1c0-10.7 13-16.1 20.5-8.5l98.3 98.9c4.7 4.7 4.7 12.2 0 16.9l-98.3 98.9c-7.5 7.7-20.5 2.3-20.5-8.4zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/>
-    </svg>
-  </button>
+  <div class="z-10 float-left">
+    <button 
+      class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+      type="button"
+      data-drawer-target="drawer-left"
+      data-drawer-show="drawer-left"
+      aria-controls="drawer-left"
+      {{on "click" (toggle "show" this)}}
+    >
+      <span class="align-middle">Query Settings</span>
+      <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="play-caret" class="inline mx-1 w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M176 354.9V157.1c0-10.7 13-16.1 20.5-8.5l98.3 98.9c4.7 4.7 4.7 12.2 0 16.9l-98.3 98.9c-7.5 7.7-20.5 2.3-20.5-8.4zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/>
+      </svg>
+    </button>
+  </div>
 
-  <div class="offcanvas offcanvas-start fixed bottom-0 flex flex-col max-w-full bg-basement invisible bg-clip-padding shadow-sm outline-none transition duration-300 ease-in-out text-gray-700 top-12 left-0 border border-graph-1 w-96" tabindex="-1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
-    <div class="offcanvas-header flex items-center justify-between p-4 prose">
-      <h2 class="offcanvas-title mb-0" id="offcanvasLeftLabel">Query Settings</h2>
-      <button type="button" class="btn-close box-content w-4 h-4 p-2 -my-5 -mr-2 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body flex-grow p-4 overflow-y-auto prose">
+  <!-- drawer component -->
+  <div id="drawer-left" class={{(concat (if (not this.show) "hidden ") "fixed z-40 h-screen p-4 overflow-y-auto bg-white w-96 dark:bg-gray-800")}} tabindex="-1" aria-labelledby="drawer-label">
+     <h5 id="drawer-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
+       <svg class="w-5 h-5 mr-2" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+
+       </svg>
+       Query Settings
+     </h5>
+     <button 
+       type="button"
+       data-drawer-dismiss="drawer-left" 
+       aria-controls="drawer-left"
+       {{on "click" (fn (mut this.show) false)}}
+       class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        <span class="sr-only">Close menu</span>
+     </button>
+
       <select
         class="form-select appearance-none block w-full mb-5 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Select the query"
         {{on "change" this.selectQuery}}
@@ -30,36 +52,35 @@
         >{{this.graph.query.description}}</p>
       {{/if}}
 
-      
+      {{#if this.queryVariables}}
+        <h3>Query Variables</h3>
+        <div class="mb-36">
+          {{#each-in this.queryVariables as |name value|}}
+            <label for={{name}} class="form-label inline-block mb-2 text-gray-700">{{value.label}}</label>
+            <Input 
+              id={{name}}
+              @value={{value.value}}
+              placeholder={{value.value}}
+              {{on "input" (perform this.overrideQueryVariable name)}}
+              class="form-control block w-full px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            />
+          {{/each-in}}
+        </div>
+      {{/if}}
 
-    {{#if this.queryVariables}}
-      <h3>Query Variables</h3>
-      <div class="mb-36">
-        {{#each-in this.queryVariables as |name value|}}
-          <label for={{name}} class="form-label inline-block mb-2 text-gray-700">{{value.label}}</label>
-          <Input 
-            id={{name}}
-            @value={{value.value}}
-            placeholder={{value.value}}
-            {{on "input" (perform this.overrideQueryVariable name)}}
-            class="form-control block w-full px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          />
-        {{/each-in}}
+      <div class="fixed inset-x-0 bottom-0 p-4 w-96">
+        <label for="queryString" class="form-label inline-block my-2 text-gray-700"
+        >Resulting Query String</label>
+        <textarea
+        class="form-control block w-full px-3 py-1.5 text-disabled font-normal bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        id="queryString"
+        rows="3"
+        disabled 
+        value={{this.graph.queryString}} 
+        placeholder="The resulting query string"
+        />
       </div>
-    {{/if}}
 
-    <div class="fixed inset-x-0 bottom-0 p-4 w-96">
-      <label for="queryString" class="form-label inline-block my-2 text-gray-700"
-      >Resulting Query String</label>
-      <textarea
-      class="form-control block w-full px-3 py-1.5 text-disabled font-normal bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-      id="queryString"
-      rows="3"
-      disabled 
-      value={{this.graph.queryString}} 
-      placeholder="The resulting query string"
-      />
-      </div>
-    </div>
+     </div>
   </div>
-</div>
+

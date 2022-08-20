@@ -3,9 +3,12 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { restartableTask } from 'ember-concurrency';
 import { timeout } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
 
 export default class QuerySidebarComponent extends Component {
   @service graph;
+
+  @tracked show = false;
 
   get queries() {
     return this.graph.queries;
