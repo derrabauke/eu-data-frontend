@@ -6,6 +6,9 @@ module.exports = function (environment) {
     environment,
     rootURL: '/',
     locationType: 'history',
+    fingerprint: {
+      prepend: 'https://derrabauke.github.io/',
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -44,7 +47,7 @@ module.exports = function (environment) {
   }
 
   if (environment === 'production') {
-    ENV.rootURL = './';
+    ENV.rootURL = '/eu-data-frontend/';
   }
 
   return ENV;
