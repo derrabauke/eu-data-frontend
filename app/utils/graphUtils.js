@@ -7,14 +7,18 @@ export const LABEL_MAPPING = {
   Tagline: 'euroSciVocCode',
 };
 
-let LOGGING = true;
+let LOGGING = false;
+
+export const loggingStatus = () => {
+  return LOGGING;
+};
 
 export const logStatements = (...messages) => {
   if (LOGGING) console.log(...messages);
 };
 
 export const toggleLogging = (onOff) => {
-  LOGGING = onOff ?? !LOGGING;
+  return (LOGGING = onOff ?? !LOGGING);
 };
 
 export const logPerformancenStart = (markName) => {
@@ -32,7 +36,7 @@ export const logPerformancenEnd = (markName) => {
     `${markName}-end`
   ).duration;
   duration = duration / 1000;
-  console.log(`${markName} processing took: ${duration.toFixed(5)} seconds.`);
+  logStatements(`${markName} processing took: ${duration.toFixed(5)} seconds.`);
 
   performance.clearMarks(`${markName}-start`);
   performance.clearMarks(`${markName}-end`);

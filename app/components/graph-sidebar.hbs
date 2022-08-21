@@ -75,6 +75,7 @@
         min="0"
         max="4"
         step="0.2"
+        disabled={{(not this.renderService.barnesHutOptimize)}}
         value={{this.renderService.barnesHutTheta}}
         {{on "input" (fn this.updateSetting "barnesHutTheta")}}
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
@@ -111,6 +112,17 @@
         value={{this.renderService.iterations}}
         {{on "input" (fn this.updateSetting "iterations")}}
         class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
+
+      <label for="logging-toggle" class="inline-flex relative items-center cursor-pointer my-2">
+        <input 
+          type="checkbox" 
+          id="logging-toggle"
+          class="sr-only peer" 
+          checked={{this.renderService.logging}}
+          {{on "change" this.renderService.toggleLogs}} />
+        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+        <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Log Performance Stats to Console</span>
+      </label>
 
       <hr/>
       <h4>Further Ideas what could be configurable:</h4>

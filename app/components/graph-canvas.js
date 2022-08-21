@@ -13,6 +13,7 @@ import { tracked } from '@glimmer/tracking';
 import {
   colorizeByLabel,
   LABEL_MAPPING,
+  logStatements,
   logPerformancenEnd,
   logPerformancenStart,
   nodeSizeByDegree,
@@ -37,7 +38,7 @@ export default class GraphCanvasComponent extends Component {
 
   @restartableTask
   *rendererForGraph(...args) {
-    const skipInitialization = args[2].skipInitialization
+    const skipInitialization = args[2].skipInitialization;
     // debounce any rendering request
     yield timeout(800);
 
@@ -49,7 +50,7 @@ export default class GraphCanvasComponent extends Component {
     // track performance for this processing
     logPerformancenStart('layout');
 
-    if(!skipInitialization) {
+    if (!skipInitialization) {
       //clear all existing edgese and nodes from the graph
       // !This deletes all computed properties and layouts as well!
       this.graph.clear();
@@ -74,6 +75,16 @@ export default class GraphCanvasComponent extends Component {
     if (this.graph.directedSize > 0) {
       nodeSizeByDegree(this.graph);
     }
+
+    // TODO: Implement generic filters in sidebar
+    // this.graph.filterEdges((edge, atts) => {
+    //   const gt15 = atts.weight?.low > 15;
+    //   if (gt15) logStatements(atts.weight.low);
+    //   return gt15;
+    // });
+
+    // TODO: Node Filter
+    // this.graph.filterNodes(callback)
 
     // run layout algorithm according to graph settings
     // if (this.queryService.layoutAlgorithm === 'louvain') {
@@ -146,7 +157,7 @@ export default class GraphCanvasComponent extends Component {
       setHoverEdge(edge);
       renderer.refresh();
     });
-    renderer.on('leaveEdge', ({ edge }) => {
+    renderer.on('leaveEdge', () => {
       setHoverEdge(null);
       renderer.refresh();
     });
