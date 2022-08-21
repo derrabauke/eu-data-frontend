@@ -1,6 +1,10 @@
 # eu-data-frontend
 
-This is the frontend part of my data-analysis project. You have to enter credentials for a Neo4j AuraDB instance. The whole authentification setup is not production ready at all! Remember to clear your cookies or use the `logout` button!
+This is the frontend part of my data-analysis project. It consists of this very frontend which consumes the data from a graph database based on Neo4j. Check out the [data scraping and modelling here.](https://github.com/derrabauke/eu-data-workflow). The graph rendering is based on [Sigma.js](https://github.com/jacomyal/sigma.js/) and [Graphology](https://github.com/graphology/graphology). Behind the scenes [EmberJS](https://github.com/emberjs/ember.js) is utilized for rigging the app.
+
+## Access
+
+You have to enter credentials for a Neo4j AuraDB instance. Write me an email to `${["falk","neumann"].join(".")}@${["adfinis","com"].join(".")}` and we can talk about sharing the credentials. The whole authentification setup is not production ready at all! Remember to clear your cookies or use the `logout` button after you are done with your session!
 
 ## Prerequisites
 
@@ -42,6 +46,4 @@ You will need the following things properly installed on your computer.
 ## Further specialities
 
 - tailwindCSS
-- tw-elements
-- tucan styles
 - embroider
