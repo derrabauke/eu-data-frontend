@@ -9,6 +9,7 @@ import FA2Layout from 'graphology-layout-forceatlas2/worker';
 import { restartableTask } from 'ember-concurrency';
 import { timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
+import {TrackedSet} from 'tracked-built-ins';
 
 import {
   colorizeByLabel,
@@ -24,6 +25,8 @@ export default class GraphCanvasComponent extends Component {
   @service('render-settings') renderService;
 
   @tracked hoveredEdge = null;
+  @tracked hoverNode = null;
+  hoveredNeighbors = new TrackedSet();
 
   constructor(...args) {
     super(...args);
@@ -110,8 +113,6 @@ export default class GraphCanvasComponent extends Component {
     // Measure performance for layout processing
     logPerformancenEnd('layout');
 
-    // nodeSizeByDegree(this.graph);
-
     if (!this.renderer) {
       const edgeReducer = (edge, data) => {
         const res = { ...data };
@@ -135,8 +136,8 @@ export default class GraphCanvasComponent extends Component {
         enableEdgeClickEvents: true,
         enableEdgeHoverEvents: 'debounce',
         edgeLabelSize: 20,
-        edgeReducer: edgeReducer,
-        nodeReducer: nodeReducer,
+        edgeReducer: this.edgeReducerFunction.bind(this),
+        nodeReducer: this.nodeReducerFunction.bind(this),
         label: { attributes: 'name' },
         labelSize: 25,
         renderLabels: true,
@@ -153,6 +154,15 @@ export default class GraphCanvasComponent extends Component {
       this.hoveredEdge = edge;
     };
 
+    renderer.on('enterNode', ({ node }) => {
+      this.setHoverNode(node);
+      renderer.refresh();
+    });
+    renderer.on('leaveNode', () => {
+      this.setHoverNode(null);
+      renderer.refresh();
+    });
+
     renderer.on('enterEdge', ({ edge }) => {
       setHoverEdge(edge);
       renderer.refresh();
@@ -161,5 +171,48 @@ export default class GraphCanvasComponent extends Component {
       setHoverEdge(null);
       renderer.refresh();
     });
+  }
+
+  nodeReducerFunction(node, data) {
+    const res = { ...data };
+    res.label =
+      data[LABEL_MAPPING[data['@labels'][0]]] ?? data.title ?? data.name;
+
+    if (
+      this.hoverNode &&
+      this.hoveredNeighbors &&
+      !this.hoveredNeighbors.has(node) &&
+      this.hoverNode !== node
+    ) {
+      res.label = '';
+      res.hidden = true;
+      // res.color = '#f6f6f6';
+    } else if (this.hoverNode === node) {
+      res.highlighted = true;
+      res.color = '#0E9F6E';
+    }
+
+    return res;
+  }
+
+  edgeReducerFunction(edge, data) {
+    const res = { ...data };
+
+    if (this.hoverNode && !this.graph.hasExtremity(edge, this.hoverNode)) {
+      res.hidden = true;
+    }
+
+    return res;
+  }
+
+  setHoverNode(node) {
+    if (node) {
+      this.hoverNode = node;
+      this.hoveredNeighbors = new TrackedSet(this.graph.neighbors(node));
+    } else {
+      this.hoverNode = null;
+      this.hoveredNeighbors = new TrackedSet();
+    }
+    this.renderer.refresh();
   }
 }
