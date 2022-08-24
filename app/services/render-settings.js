@@ -5,14 +5,16 @@ import { action } from '@ember/object';
 
 export default class RenderSettingsService extends Service {
   @tracked searchTerm = '';
+  @tracked selectedNode;
+  _graphNodes = [];
 
-  @tracked gravity = 2;
+  @tracked gravity = 0.8;
   @tracked scalingRatio = 5;
   @tracked barnesHutOptimize = true;
   @tracked barnesHutTheta = 2;
   @tracked linLogMode = true;
   @tracked edgeWeightInfluence = 0;
-  @tracked iterations = 50;
+  @tracked iterations = 20;
 
   @tracked filterEdgeWeight = false;
   @tracked filterEdgeWeightValue = 30;
@@ -21,7 +23,6 @@ export default class RenderSettingsService extends Service {
 
   get configuration() {
     return {
-      searchTerm: this.searchTerm,
       iterations: this.iterations,
       settings: {
         gravity: this.gravity,
@@ -35,6 +36,20 @@ export default class RenderSettingsService extends Service {
         linLogMode: this.linLogMode,
       },
     };
+  }
+
+  @action
+  setGraphNodes(nodes) {
+    this._graphNodes = nodes;
+  }
+
+  @action
+  searchResults(searchTerm) {
+    if (!searchTerm) return this._graphNodes;
+    const term = searchTerm.toLowerCase();
+    return this._graphNodes.filter(
+      (node) => node.name.toLowerCase().indexOf(term) !== -1
+    );
   }
 
   @action

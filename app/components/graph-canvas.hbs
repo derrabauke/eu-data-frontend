@@ -1,7 +1,8 @@
-<div id="canvas" class="-z-20 absolute inset-0 top-11 bg-gray-100"
+<div id="canvas" class="-z-20 absolute inset-0 top-11"
   {{did-insert this.setupCanvas}}
   {{did-update (perform this.rendererForGraph) @graph}}
   {{did-update (perform this.rendererForGraph) this.renderService.configuration skipInitialization=true}}
+  {{did-update (perform this.focusNode) this.renderService.selectedNode}}
 ></div>
 
 {{#if (or this.queryService.fetchGraph.isRunning this.rendererForGraph.isRunning)}}

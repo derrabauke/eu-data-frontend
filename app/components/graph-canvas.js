@@ -26,12 +26,17 @@ export default class GraphCanvasComponent extends Component {
 
   @tracked hoveredEdge = null;
   @tracked hoverNode = null;
+  @tracked _highlightColor = '#2ea';
   hoveredNeighbors = new TrackedSet();
 
   constructor(...args) {
     super(...args);
 
     this.graph = new Graph({ multi: true, allowSelfLoops: true });
+  }
+
+  get highlightColor() {
+    return this._highlightColor;
   }
 
   @action
@@ -60,6 +65,13 @@ export default class GraphCanvasComponent extends Component {
       // import graph data to graphology graph object
       yield this.graph.import(this.args.graph);
 
+      // map nodes for search operations
+      this.renderService.setGraphNodes(
+        this.graph.mapNodes((_, attributes) => {
+          return { ...attributes, name: attributes.title ?? attributes.name };
+        })
+      );
+
       // add random circular coordinates for every node
       // they need to be assigned as a starting point
       this.graph.size > 50
@@ -74,7 +86,8 @@ export default class GraphCanvasComponent extends Component {
     }
 
     // make the graph more visually comprehensible
-    colorizeByLabel(this.graph);
+    this._highlightColor = colorizeByLabel(this.graph);
+
     if (this.graph.directedSize > 0) {
       nodeSizeByDegree(this.graph);
     }
@@ -114,23 +127,6 @@ export default class GraphCanvasComponent extends Component {
     logPerformancenEnd('layout');
 
     if (!this.renderer) {
-      const edgeReducer = (edge, data) => {
-        const res = { ...data };
-        res.label = data['@type'];
-        res.size = data.weight?.low
-          ? Math.max(1, Math.log(data.weight.low)) * 2
-          : res.size;
-        if (edge === this.hoveredEdge) res.color = '#cc0000';
-        return res;
-      };
-
-      const nodeReducer = (node, data) => {
-        const res = { ...data };
-        res.label =
-          data[LABEL_MAPPING[data['@labels'][0]]] ?? data.title ?? data.name;
-        return res;
-      };
-
       // setup Sigma renderer
       this.renderer = new Sigma(this.graph, this.canvas, {
         enableEdgeClickEvents: true,
@@ -185,22 +181,31 @@ export default class GraphCanvasComponent extends Component {
       this.hoverNode !== node
     ) {
       res.label = '';
-      res.hidden = true;
-      // res.color = '#f6f6f6';
+      // res.hidden = true;
+      res.color = "#cecece";
     } else if (this.hoverNode === node) {
       res.highlighted = true;
       res.color = '#0E9F6E';
     }
-
     return res;
   }
 
   edgeReducerFunction(edge, data) {
     const res = { ...data };
 
-    if (this.hoverNode && !this.graph.hasExtremity(edge, this.hoverNode)) {
-      res.hidden = true;
+    if (this.hoverNode) {
+      if (!this.graph.hasExtremity(edge, this.hoverNode)) {
+        res.hidden = true;
+      } else {
+        res.color = '#4d4d4d';
+      }
     }
+
+    res.label = data['@type'];
+    res.size = data.weight?.low
+      ? Math.max(1, Math.log(data.weight.low)) * 2
+      : res.size;
+    if (edge === this.hoveredEdge) res.color = '#cc0000';
 
     return res;
   }
@@ -214,5 +219,21 @@ export default class GraphCanvasComponent extends Component {
       this.hoveredNeighbors = new TrackedSet();
     }
     this.renderer.refresh();
+  }
+
+  @restartableTask
+  *focusNode() {
+    const nodeId = this.renderService.selectedNode['@id'];
+    if(!nodeId) {
+      return
+    }
+    while(this.rendererForGraph.isRunning) {
+      yield timeout(500)
+    }
+    this.setHoverNode(nodeId)
+    const nodeData = this.renderer.getNodeDisplayData(nodeId);
+    this.renderer.getCamera().animate(nodeData, {
+      duration: 500,
+    });
   }
 }

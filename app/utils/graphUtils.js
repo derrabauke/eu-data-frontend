@@ -59,8 +59,8 @@ export const colorizeByLabel = (graph) => {
   }
 
   // create and assign one color by labelType
-  const palette = iwanthue(labelCount, {
-    seed: 'labelTypes',
+  const palette = iwanthue(labelCount + 1, {
+    seed: 'superSeed',
   });
   for (const type in labelTypes) {
     const color = palette.pop();
@@ -71,7 +71,8 @@ export const colorizeByLabel = (graph) => {
     atts.color = labelTypes[atts['@labels'][0]].color;
   });
 
-  return graph;
+  // return last color as highlightcolor
+  return palette.pop();
 };
 
 /**
