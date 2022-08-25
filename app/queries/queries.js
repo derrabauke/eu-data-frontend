@@ -12,7 +12,7 @@ const taggedTemplate = (strings, ...keys) => {
 
 export const getRegisteredQueryFromId = (queryId) => {
   if (!queryId) {
-    return QUERIES[2];
+    return QUERIES[0];
   }
   const query = QUERIES.find((query) => `${query.id}` === `${queryId}`);
   if (!query) {

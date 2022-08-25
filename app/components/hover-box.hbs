@@ -1,0 +1,16 @@
+<div 
+  id="hoverbox"
+  class="absolute"
+  {{did-insert this.initBox this}}>
+  {{#if this.edge}}
+    <div class="z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm"
+         ><p>{{this.edge.label}}</p>
+         {{#if this.edge.weight}}
+          <p>Weight: {{this.edge.weight}}</p>
+         {{/if}}
+         {{#if this.edge.role}}
+          <p>Role: {{this.edge.role}}</p>
+         {{/if}}
+    </div>
+  {{/if}}
+</div>

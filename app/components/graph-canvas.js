@@ -9,12 +9,12 @@ import FA2Layout from 'graphology-layout-forceatlas2/worker';
 import { restartableTask } from 'ember-concurrency';
 import { timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import {TrackedSet} from 'tracked-built-ins';
+import { TrackedSet } from 'tracked-built-ins';
 
 import {
   colorizeByLabel,
   LABEL_MAPPING,
-  logStatements,
+  // logStatements,
   logPerformancenEnd,
   logPerformancenStart,
   nodeSizeByDegree,
@@ -146,9 +146,10 @@ export default class GraphCanvasComponent extends Component {
   }
 
   attachEventListeners(renderer) {
-    const setHoverEdge = (edge) => {
-      this.hoveredEdge = edge;
-    };
+    renderer.on('clickNode', ({ node }) => {
+      this.selectNode(node);
+      renderer.refresh();
+    });
 
     renderer.on('enterNode', ({ node }) => {
       this.setHoverNode(node);
@@ -160,11 +161,11 @@ export default class GraphCanvasComponent extends Component {
     });
 
     renderer.on('enterEdge', ({ edge }) => {
-      setHoverEdge(edge);
+      this.setHoverEdge(edge);
       renderer.refresh();
     });
     renderer.on('leaveEdge', () => {
-      setHoverEdge(null);
+      this.setHoverEdge(null);
       renderer.refresh();
     });
   }
@@ -182,7 +183,7 @@ export default class GraphCanvasComponent extends Component {
     ) {
       res.label = '';
       // res.hidden = true;
-      res.color = "#cecece";
+      res.color = '#cecece';
     } else if (this.hoverNode === node) {
       res.highlighted = true;
       res.color = '#0E9F6E';
@@ -221,16 +222,30 @@ export default class GraphCanvasComponent extends Component {
     this.renderer.refresh();
   }
 
+  setHoverEdge(edge) {
+    if (edge) {
+      this.renderService.hoverEdge = this.renderer.getEdgeDisplayData(edge);
+      this.hoveredEdge = edge;
+    } else {
+      this.renderService.hoverEdge = null;
+      this.hoveredEdge = null;
+    }
+  }
+
+  selectNode(id) {
+    this.renderService.selectedNode = this.renderer.getNodeDisplayData(id);
+  }
+
   @restartableTask
   *focusNode() {
-    const nodeId = this.renderService.selectedNode['@id'];
-    if(!nodeId) {
-      return
+    const nodeId = this.renderService.selectedNode?.['@id'];
+    if (!nodeId) {
+      return;
     }
-    while(this.rendererForGraph.isRunning) {
-      yield timeout(500)
+    while (this.rendererForGraph.isRunning) {
+      yield timeout(500);
     }
-    this.setHoverNode(nodeId)
+    this.setHoverNode(nodeId);
     const nodeData = this.renderer.getNodeDisplayData(nodeId);
     this.renderer.getCamera().animate(nodeData, {
       duration: 500,

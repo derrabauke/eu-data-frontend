@@ -19,6 +19,7 @@ const LAYOUT_ALGORITHMS = ['forceAtlas2', 'louvain'];
 export default class GraphService extends Service {
   @service session;
   @service router;
+  @service('render-settings') renderService;
 
   @tracked _queryId;
   @tracked _layoutAlgorithm = 'forceAtlas2';
@@ -77,6 +78,8 @@ export default class GraphService extends Service {
   *fetchGraph() {
     // debounce as it is a restartable task
     yield timeout(50);
+
+    this.renderService.reset();
 
     // measure performance for fetching the query results
     logPerformancenStart('query');

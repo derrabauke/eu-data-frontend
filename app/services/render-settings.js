@@ -6,6 +6,7 @@ import { action } from '@ember/object';
 export default class RenderSettingsService extends Service {
   @tracked searchTerm = '';
   @tracked selectedNode;
+  @tracked hoverEdge;
   _graphNodes = [];
 
   @tracked gravity = 0.8;
@@ -14,7 +15,7 @@ export default class RenderSettingsService extends Service {
   @tracked barnesHutTheta = 2;
   @tracked linLogMode = true;
   @tracked edgeWeightInfluence = 0;
-  @tracked iterations = 20;
+  @tracked iterations = 30;
 
   @tracked filterEdgeWeight = false;
   @tracked filterEdgeWeightValue = 30;
@@ -55,5 +56,11 @@ export default class RenderSettingsService extends Service {
   @action
   toggleLogs() {
     this.logging = toggleLogging();
+  }
+
+  @action
+  reset() {
+    this.selectedNode = null;
+    this.hoverEdge = null;
   }
 }
