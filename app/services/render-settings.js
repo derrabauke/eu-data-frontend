@@ -9,12 +9,12 @@ export default class RenderSettingsService extends Service {
   @tracked hoverEdge;
   _graphNodes = [];
 
-  @tracked gravity = 0.8;
+  @tracked gravity = 1;
   @tracked scalingRatio = 5;
-  @tracked barnesHutOptimize = true;
-  @tracked barnesHutTheta = 2;
-  @tracked linLogMode = true;
-  @tracked edgeWeightInfluence = 0;
+  @tracked barnesHutOptimize = false;
+  @tracked barnesHutTheta = 1;
+  @tracked linLogMode = false;
+  @tracked edgeWeightInfluence = 1;
   @tracked iterations = 30;
 
   @tracked filterEdgeWeight = false;

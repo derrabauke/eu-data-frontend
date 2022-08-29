@@ -84,11 +84,11 @@ export const QUERIES = [
   {
     id: '2',
     label: 'Non solitaire Organizations',
-    description: '',
+    description: 'All organizations with more than x cooperation partners.',
     template: taggedTemplate`MATCH (a:Organization)-->(b:EuProject)<--(c:Organization)
-      WITH a, count(b) as coops, collect(c) as coop_partners
+      WITH a, b, count(b) as coops, collect(c) as coop_partners
       WHERE coops > ${'cooperationsCount'}
-      RETURN a.name,coops, coop_partners LIMIT ${'limit'}`,
+      RETURN a, b,coops, coop_partners LIMIT ${'limit'}`,
     variables: {
       limit: {
         label: 'Limit result count for query',
@@ -121,6 +121,30 @@ export const QUERIES = [
       maxLevel: {
         label: 'Maximum count of hops between entities',
         value: '3',
+      },
+    },
+  },
+  {
+    id: '4',
+    label:
+      'Master-Call: Cooperations of Organizations participating on a project with certain master call.',
+    description:
+      'Render cooperations between organizations on projects with a master call containing the given search term.',
+    template: taggedTemplate`MATCH (a:Organization)-[c:COOPERATES]-(b:Organization)
+      WITH a,c,b
+      MATCH (a)-[part:PARTICIPATE]-(p:EuProject) 
+      WHERE p.masterCall CONTAINS ${'masterCall'};
+      RETURN a,c,b,part,p
+      LIMIT ${'limit'}`,
+    variables: {
+      limit: {
+        label: 'Limit number of matched relationships.',
+        value: '100',
+      },
+      masterCall: {
+        label:
+          'Search for cooperations on projects connected to a certain master call.',
+        value: 'H2020',
       },
     },
   },
