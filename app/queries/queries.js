@@ -73,11 +73,25 @@ export const QUERIES = [
     label: 'Cooperating Organizations',
     description:
       'Renders the given amount of cooperations between organizations.',
-    template: taggedTemplate`MATCH (a:Organization)-[c:COOPERATES]-(b:Organization) RETURN a,b,c LIMIT ${'limit'}`,
+    template: taggedTemplate`MATCH (a:Organization)-[c:COOPERATES]-(b:Organization)
+      WHERE a.name CONTAINS '${'organization'}' AND b.name CONTAINS '${'organization'}' AND c.weight > ${'count'}
+      RETURN a,b,c LIMIT ${'limit'}`,
     variables: {
       limit: {
         label: 'Limit result count for query',
         value: '1000',
+      },
+      count: {
+        label: 'Count of cooperations between organizations.',
+        value: '5',
+      },
+      organizationA: {
+        label: 'Name of the source organization from which the graph starts.',
+        value: 'FRAUNHOFER',
+      },
+      organizationB: {
+        label: 'Name of the target organization from which the graph starts.',
+        value: 'UNI',
       },
     },
   },
@@ -105,8 +119,10 @@ export const QUERIES = [
     label: 'Spanning tree: Organizations participating on a project',
     description:
       'Shows a spanning tree, where Organizations cooperated together on a single project.',
-    template: taggedTemplate`MATCH (p:Organization)
-      CALL apoc.path.spanningTree(p, {
+    template: taggedTemplate`MATCH (o:Organization)-[r:PARTICIPATE]->(p)
+      WITH o, count(r) as coops
+      WHERE o.name CONTAINS "${'organization'.toUpperCase()}" AND coops > 1
+      CALL apoc.path.spanningTree(o, {
 	    relationshipFilter: "PARTICIPATE>|<PARTICIPATE",
 	    minLevel: 1,
 	    maxLevel: ${'maxLevel'}
@@ -116,11 +132,15 @@ export const QUERIES = [
     variables: {
       limit: {
         label: 'Limit number of paths displayed',
-        value: '100',
+        value: '3000',
       },
       maxLevel: {
         label: 'Maximum count of hops between entities',
         value: '3',
+      },
+      organization: {
+        label: 'Name of the organisation.',
+        value: 'UNI',
       },
     },
   },
