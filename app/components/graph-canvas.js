@@ -170,6 +170,12 @@ export default class GraphCanvasComponent extends Component {
     });
   }
 
+  willDestroy(...args) {
+    super.willDestroy(...args);
+
+    this.renderer?.removeAllListeners();
+  }
+
   nodeReducerFunction(node, data) {
     const res = { ...data };
     res.label =
