@@ -39,6 +39,14 @@ export default class GraphCanvasComponent extends Component {
     return this._highlightColor;
   }
 
+  get selectedNode() {
+    return this.renderService.selectedNode;
+  }
+
+  get selectedNodeId() {
+    return this.selectedNode?.['@id'];
+  }
+
   @action
   setupCanvas(element) {
     this.canvas = element;
@@ -137,7 +145,7 @@ export default class GraphCanvasComponent extends Component {
         label: { attributes: 'name' },
         labelSize: 25,
         renderLabels: true,
-        renderEdgeLabels: true,
+        renderEdgeLabels: false,
       });
       this.attachEventListeners(this.renderer);
     } else {
@@ -194,6 +202,10 @@ export default class GraphCanvasComponent extends Component {
       res.highlighted = true;
       res.color = '#0E9F6E';
     }
+
+    if (node === this.selectedNodeId) {
+      res.color = '#6e0e9f';
+    }
     return res;
   }
 
@@ -218,12 +230,27 @@ export default class GraphCanvasComponent extends Component {
   }
 
   setHoverNode(node) {
+    this.setHoverEdge(null);
     if (node) {
       this.hoverNode = node;
       this.hoveredNeighbors = new TrackedSet(this.graph.neighbors(node));
+      if (this.selectedNodeId) {
+        this.hoveredNeighbors.add(this.selectedNodeId);
+        if (node !== this.selectedNodeId) {
+          const edge = this.graph?.findEdge(this.selectedNodeId, node, (e) => {
+            return e;
+          });
+          this.setHoverEdge(edge);
+        }
+      }
+    } else if (this.selectedNode) {
+      this.hoverNode = this.selectedNodeId;
+      this.hoveredNeighbors = new TrackedSet(
+        this.graph.neighbors(this.selectedNodeId)
+      );
     } else {
       this.hoverNode = null;
-      this.hoveredNeighbors = new TrackedSet();
+      this.hoveredNeighbors.clear();
     }
     this.renderer.refresh();
   }
@@ -239,12 +266,13 @@ export default class GraphCanvasComponent extends Component {
   }
 
   selectNode(id) {
+    this.renderer.settings.renderEdgeLabels = !!id;
     this.renderService.selectedNode = this.renderer.getNodeDisplayData(id);
   }
 
   @restartableTask
   *focusNode() {
-    const nodeId = this.renderService.selectedNode?.['@id'];
+    const nodeId = this.selectedNodeId;
     if (!nodeId) {
       return;
     }

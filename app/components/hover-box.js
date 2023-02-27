@@ -33,7 +33,8 @@ export default class HoverBoxComponent extends Component {
     const x = e.clientX,
       y = e.clientY;
 
-    this.box.style.top = y + 'px';
-    this.box.style.left = x + 'px';
+    // shift the box so it won't disturb drag'n'drop
+    this.box.style.top = y + 10 + 'px';
+    this.box.style.left = x + 5 + 'px';
   }
 }
